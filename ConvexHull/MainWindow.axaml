@@ -19,15 +19,16 @@
                     Margin="16">
             <Button Content="Generate Points"
                     Click="GeneratePoints_Click" />
+            <Button Content="Show Finished"
+                    Click="NextStep_Click" />
             <Button Content="Next Step"
                     Click="NextStep_Click" />
         </StackPanel>
         <!-- Drawing area -->
         <Border Grid.Row="1"
                 Background="#111827"
-                Margin="16"
-                CornerRadius="8"
-                ClipToBounds="True">
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
             <visuals:HullCanvas />
         </Border>
     </Grid>

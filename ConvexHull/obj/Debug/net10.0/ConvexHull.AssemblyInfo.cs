@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ConvexHull")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+394c9b8d6debbd60d6a6d0f38789116c5fcd3c91")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7548079525817693cd41bb552dd20edfdfaaf20")]
 [assembly: System.Reflection.AssemblyProductAttribute("ConvexHull")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ConvexHull")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

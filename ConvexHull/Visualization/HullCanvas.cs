@@ -1,66 +1,77 @@
-
+using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Rendering.SceneGraph;
-using Avalonia.Skia;
-using SkiaSharp;
+using Avalonia.Metadata;
+using ConvexHull.Models;
 
 namespace ConvexHull.Visualization;
 
 public class HullCanvas : Control
 {
-    // Called by Avalonia when the control needs rendering
+
+    public const int CanvasWidth = 400;
+    public const int CanvasHeight = 400;
+    private List<Point2D> points;
+
+
+    public HullCanvas()
+    {
+        Width = CanvasWidth;
+        Height = CanvasHeight;
+        points = GeneratePoints(10);
+
+    }
+
     public override void Render(DrawingContext context)
     {
         base.Render(context);
 
-        context.Custom(
-            new HullDrawOperation(new Rect(Bounds.Size))
+        DrawLine(points[2], points[9], context);
+        DrawPoints(points, context);
+    }
+
+    private void DrawPoints(List<Point2D> points, DrawingContext ctx)
+    {
+
+        for (int i = 0; i < points.Count; i++)
+        {
+            Point2D point = points[i];
+
+            ctx.DrawEllipse(
+                  Brushes.CornflowerBlue,
+                  null,
+                  new Point(point.X, point.Y),
+                  5,
+                  5
+              );
+        }
+
+    }
+
+    private void DrawLine(Point2D fromPoint, Point2D toPoint, DrawingContext ctx)
+    {
+        ctx.DrawLine(
+            new Pen(Brushes.Red, 2),
+            new Point(fromPoint.X, fromPoint.Y),
+            new Point(toPoint.X, toPoint.Y)
         );
     }
 
-    private class HullDrawOperation : ICustomDrawOperation
+    private List<Point2D> GeneratePoints(int amount)
     {
-        public Rect Bounds { get; }
+        var points = new List<Point2D>();
+        var random = new Random();
 
-        public HullDrawOperation(Rect bounds)
+        for (int point = 0; point < amount; point++)
         {
-            Bounds = bounds;
+            double x = random.NextDouble() * CanvasWidth;
+            double y = random.NextDouble() * CanvasHeight;
+
+            points.Add(new Point2D(x, y));
         }
 
-        public void Render(ImmediateDrawingContext context)
-        {
-            // Get Avalonia's Skia canvas
-            var feature =
-                context.TryGetFeature<ISkiaSharpApiLeaseFeature>();
-
-            if (feature is null)
-                return;
-
-            using var lease = feature.Lease();
-            SKCanvas canvas = lease.SkCanvas;
-
-            // Configure how our points should look
-            using var paint = new SKPaint
-            {
-                Color = SKColors.CornflowerBlue,
-                IsAntialias = true,
-                Style = SKPaintStyle.Fill
-            };
-
-            // Draw example points
-            canvas.DrawCircle(100, 100, 5, paint);
-            canvas.DrawCircle(250, 150, 5, paint);
-            canvas.DrawCircle(180, 280, 5, paint);
-        }
-
-        public bool HitTest(Point point)
-            => Bounds.Contains(point);
-
-        public bool Equals(ICustomDrawOperation? other)
-            => false;
-
-        public void Dispose() { }
+        return points;
     }
 }
