@@ -53,14 +53,15 @@ public partial class MainWindow : Window
     {
         int pointCount = (int)(PointCountInput.Value ?? 50);
 
-        List<Point2D> points = PointGenerator.Generate(
+        IReadOnlyList<Point2D> points = PointGenerator.Generate(
             pointCount,
             HullCanvas.CanvasWidth,
             HullCanvas.CanvasHeight);
 
         HullCanvasView.SetPoints(points);
 
-        List<Point2D> hull = _convexHullService.Calculate(
+        
+        IReadOnlyList<Point2D> hull = _convexHullService.Calculate(
             _algorithm,
             points);
 
