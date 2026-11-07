@@ -30,7 +30,7 @@ public class ConvexHullService
 
     private List<Point2D> CalculateQuickHull(List<Point2D> points)
     {
-        // Call your QuickHull implementation
+        // QuickHull implementation
         throw new NotImplementedException();
     }
 }

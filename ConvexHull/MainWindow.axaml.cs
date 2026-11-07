@@ -16,7 +16,7 @@ public partial class MainWindow : Window
     private Algorithm _algorithm = Algorithm.Andrew;
     private OperationMode _operationMode = OperationMode.Performance;
     private DataSourceType _dataSource = DataSourceType.Random;
-    private int _pointCount = 20;
+    private int _pointCount = 5;
 
 
     // FUNCTIONALITY
@@ -60,11 +60,11 @@ public partial class MainWindow : Window
 
         HullCanvasView.SetPoints(points);
 
-        // List<Point2D> hull = _convexHullService.Calculate(
-        //     _algorithm,
-        //     points);
+        List<Point2D> hull = _convexHullService.Calculate(
+            _algorithm,
+            points);
 
-        // HullCanvasView.SetHull(hull);
+        HullCanvasView.SetHull(hull);
     }
 
     public void Algorithm_SelectionChanged(
@@ -97,6 +97,17 @@ public partial class MainWindow : Window
         {
             _operationMode = operation;
             Console.WriteLine(_operationMode);
+        }
+    }
+
+    public void Count_ValueChanged(
+    object? sender,
+    NumericUpDownValueChangedEventArgs e)
+    {
+        if (sender is NumericUpDown input && input.Value is decimal value)
+        {
+            _pointCount = (int)value;
+            Console.WriteLine(_pointCount);
         }
     }
 

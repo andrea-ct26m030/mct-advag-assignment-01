@@ -4,6 +4,7 @@ namespace ConvexHull.Models;
 
 public class Point2D
 {
+    public double state { get; }
     public double X { get; }
     public double Y { get; }
 

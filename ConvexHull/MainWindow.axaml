@@ -33,9 +33,10 @@
                               SelectionChanged="Algorithm_SelectionChanged" />
                 </StackPanel>
                 <NumericUpDown x:Name="PointCountInput"
+                               ValueChanged="Count_ValueChanged"
                                Minimum="3"
                                Maximum="100000"
-                               Value="50" />
+                               Value="5" />
             </StackPanel>
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal">
