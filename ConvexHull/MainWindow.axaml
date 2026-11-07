@@ -14,22 +14,43 @@
     <Grid RowDefinitions="Auto,*">
         <!-- Toolbar -->
         <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    Spacing="12"
-                    Margin="16">
-            <Button Content="Generate Points"
-                    Click="GeneratePoints_Click" />
-            <Button Content="Show Finished"
-                    Click="NextStep_Click" />
-            <Button Content="Next Step"
-                    Click="NextStep_Click" />
+                    Orientation="Vertical">
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal">
+                <!-- Data selection -->
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox x:Name="DataSelector"
+                              SelectionChanged="Data_SelectionChanged" />
+                </StackPanel>
+                <!-- Operation selection -->
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox x:Name="OperationSelector"
+                              SelectionChanged="Operation_SelectionChanged" />
+                </StackPanel>
+                <!-- Algorithm selection -->
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox x:Name="AlgorithmSelector"
+                              SelectionChanged="Algorithm_SelectionChanged" />
+                </StackPanel>
+                <NumericUpDown x:Name="PointCountInput"
+                               Minimum="3"
+                               Maximum="100000"
+                               Value="50" />
+            </StackPanel>
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Start"
+                        Click="Start_Click" />
+                <Button Content="Next Step"
+                        Click="NextStep_Click" />
+            </StackPanel>
         </StackPanel>
         <!-- Drawing area -->
         <Border Grid.Row="1"
                 Background="#111827"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-            <visuals:HullCanvas />
+            <visuals:HullCanvas x:Name="HullCanvasView" />
         </Border>
     </Grid>
 </Window>

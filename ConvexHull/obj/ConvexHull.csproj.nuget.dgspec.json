@@ -65,10 +65,6 @@
             "AvaloniaUI.DiagnosticsSupport": {
               "target": "Package",
               "version": "[2.2.3, )"
-            },
-            "SkiaSharp": {
-              "target": "Package",
-              "version": "[4.154.0, )"
             }
           },
           "imports": [

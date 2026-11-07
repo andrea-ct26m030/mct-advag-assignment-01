@@ -34,7 +34,7 @@
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.12/ref/net10.0/Microsoft.Win32.Registry.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.12/ref/net10.0/mscorlib.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.12/ref/net10.0/netstandard.dll
-/Users/andreawindisch/.nuget/packages/skiasharp/4.154.0/ref/net10.0/SkiaSharp.dll
+/Users/andreawindisch/.nuget/packages/skiasharp/3.119.4/ref/net10.0/SkiaSharp.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.12/ref/net10.0/System.AppContext.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.12/ref/net10.0/System.Buffers.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.12/ref/net10.0/System.Collections.Concurrent.dll

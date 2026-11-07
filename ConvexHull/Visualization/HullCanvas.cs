@@ -5,73 +5,80 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Metadata;
 using ConvexHull.Models;
+using ConvexHull.Services;
 
 namespace ConvexHull.Visualization;
 
 public class HullCanvas : Control
 {
-
     public const int CanvasWidth = 400;
     public const int CanvasHeight = 400;
-    private List<Point2D> points;
 
+    private IReadOnlyList<Point2D> _points = [];
+    private IReadOnlyList<Point2D> _hull = [];
 
     public HullCanvas()
     {
         Width = CanvasWidth;
         Height = CanvasHeight;
-        points = GeneratePoints(10);
+    }
 
+    public void SetPoints(IReadOnlyList<Point2D> points)
+    {
+        _points = points;
+        _hull = [];
+
+        InvalidateVisual();
+    }
+
+    public void SetHull(IReadOnlyList<Point2D> hull)
+    {
+        _hull = hull;
+
+        InvalidateVisual();
     }
 
     public override void Render(DrawingContext context)
     {
         base.Render(context);
 
-        DrawLine(points[2], points[9], context);
-        DrawPoints(points, context);
+        DrawHull(context);
+        DrawPoints(context);
     }
 
-    private void DrawPoints(List<Point2D> points, DrawingContext ctx)
+    private void DrawPoints(DrawingContext context)
     {
-
-        for (int i = 0; i < points.Count; i++)
+        foreach (Point2D point in _points)
         {
-            Point2D point = points[i];
+            context.DrawEllipse(
+                Brushes.CornflowerBlue,
+                null,
+                new Point(point.X, point.Y),
+                5,
+                5);
+        }
+    }
 
-            ctx.DrawEllipse(
-                  Brushes.CornflowerBlue,
-                  null,
-                  new Point(point.X, point.Y),
-                  5,
-                  5
-              );
+    private void DrawHull(DrawingContext context)
+    {
+        if (_hull.Count < 2)
+        {
+            return;
         }
 
-    }
+        var pen = new Pen(Brushes.Red, 2);
 
-    private void DrawLine(Point2D fromPoint, Point2D toPoint, DrawingContext ctx)
-    {
-        ctx.DrawLine(
-            new Pen(Brushes.Red, 2),
-            new Point(fromPoint.X, fromPoint.Y),
-            new Point(toPoint.X, toPoint.Y)
-        );
-    }
-
-    private List<Point2D> GeneratePoints(int amount)
-    {
-        var points = new List<Point2D>();
-        var random = new Random();
-
-        for (int point = 0; point < amount; point++)
+        for (int index = 0; index < _hull.Count; index++)
         {
-            double x = random.NextDouble() * CanvasWidth;
-            double y = random.NextDouble() * CanvasHeight;
+            Point2D current = _hull[index];
 
-            points.Add(new Point2D(x, y));
+            // For the last point, this returns to point 0.
+            Point2D next = _hull[(index + 1) % _hull.Count];
+
+            context.DrawLine(
+                pen,
+                new Point(current.X, current.Y),
+                new Point(next.X, next.Y));
         }
-
-        return points;
     }
 }
