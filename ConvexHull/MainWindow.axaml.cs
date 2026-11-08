@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -60,6 +62,7 @@ public partial class MainWindow : Window
 
     public void Start_Click(object? sender, RoutedEventArgs e)
     {
+
         int pointCount = (int)(PointCountInput.Value ?? 50);
 
         IReadOnlyList<Point2D> points;
@@ -93,6 +96,7 @@ public partial class MainWindow : Window
         HullCanvasView.SetPoints(points);
 
 
+        Stopwatch stopwatch = Stopwatch.StartNew();
 
         IReadOnlyList<Point2D> hull = _convexHullService.Calculate(
             _algorithm,
@@ -100,9 +104,22 @@ public partial class MainWindow : Window
             points
             );
 
+        stopwatch.Stop();
         if (_operationMode == OperationMode.Performance)
         {
+            Console.WriteLine($"Convex Hull calculated.");
+            Console.WriteLine($"Algorithm used: {_algorithm}");
+            Console.WriteLine($"Points in hull: {hull.Count}");
+            Console.WriteLine($"Time for calculation: {stopwatch.ElapsedMilliseconds} ms");
+            Console.WriteLine("Hull includes:" + string.Join(", ", hull.Select(point => $"({point.X}, {point.Y})")));
+
+
+            PerformanceOutput.IsVisible = true;
+            PerformanceOutput.Text = $"Convex Hull calculated in {stopwatch.ElapsedMilliseconds} ms. More information in the console output.";
+            
             HullCanvasView.SetHull(hull);
+
+            return;
         }
         else
         {
@@ -156,6 +173,10 @@ public partial class MainWindow : Window
             if (_operationMode == OperationMode.Performance)
             {
                 NextStepButton.IsVisible = false;
+            }
+            else
+            {
+                PerformanceOutput.IsVisible = false;
             }
         }
     }
