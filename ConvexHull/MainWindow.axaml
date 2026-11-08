@@ -36,7 +36,17 @@
                                ValueChanged="Count_ValueChanged"
                                Minimum="3"
                                Maximum="100000"
-                               Value="5" />
+                               Value="5"
+                               IsVisible="True" />
+                <Button x:Name="FilePickerButton"
+                        Content="Load from File"
+                        Click="FilePicker_Click" 
+                        IsVisible="False" />
+                <TextBlock x:Name="FilePathTextBlock"
+                           Text=""
+                           Margin="5,0,0,0"
+                           VerticalAlignment="Center"
+                           IsVisible="False" />
             </StackPanel>
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal">

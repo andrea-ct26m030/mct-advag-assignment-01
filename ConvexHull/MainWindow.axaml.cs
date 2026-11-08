@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using ConvexHull.Enums;
 using ConvexHull.Models;
 using ConvexHull.Services;
@@ -23,6 +24,7 @@ public partial class MainWindow : Window
     private List<Point2D> points;
     private readonly ConvexHullService _convexHullService = new();
     private IReadOnlyList<Point2D> _currentHull = [];
+    private string? _selectedFilePath = null;
 
 
     public MainWindow()
@@ -53,14 +55,37 @@ public partial class MainWindow : Window
     {
         int pointCount = (int)(PointCountInput.Value ?? 50);
 
-        IReadOnlyList<Point2D> points = PointGenerator.Generate(
-            pointCount,
-            HullCanvas.CanvasWidth,
-            HullCanvas.CanvasHeight);
+        IReadOnlyList<Point2D> points;
+
+        if (_dataSource == DataSourceType.File)
+        {
+            if (string.IsNullOrEmpty(_selectedFilePath))
+            {
+                Console.WriteLine("No file selected.");
+                return;
+            }
+
+            try
+            {
+                points = FileReader.Read(_selectedFilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading file: {ex.Message}");
+                return;
+            }
+        }
+        else
+        {
+            points = PointGenerator.Generate(
+                pointCount,
+                HullCanvas.CanvasWidth,
+                HullCanvas.CanvasHeight);
+        }
 
         HullCanvasView.SetPoints(points);
 
-        
+
         IReadOnlyList<Point2D> hull = _convexHullService.Calculate(
             _algorithm,
             points);
@@ -87,6 +112,19 @@ public partial class MainWindow : Window
         {
             _dataSource = dataSource;
             Console.WriteLine(_dataSource);
+            if (_dataSource == DataSourceType.File)
+            {
+                FilePickerButton.IsVisible = true;
+                FilePathTextBlock.IsVisible = true;
+                FilePathTextBlock.Text = _selectedFilePath ?? "No file selected";
+                PointCountInput.IsVisible = false;
+            }
+            else
+            {
+                FilePickerButton.IsVisible = false;
+                FilePathTextBlock.IsVisible = false;
+                PointCountInput.IsVisible = true;
+            }
         }
     }
 
@@ -112,5 +150,30 @@ public partial class MainWindow : Window
         }
     }
 
+    public async void FilePicker_Click(
+        object? sender,
+        RoutedEventArgs e)
+    {
+        var files = await StorageProvider.OpenFilePickerAsync(
+            new FilePickerOpenOptions
+            {
+                Title = "Select a file",
+                AllowMultiple = false,
+                FileTypeFilter =
+                [
+                    new FilePickerFileType("Point files")
+                    {
+                        Patterns = ["*.txt", "*.csv"]
+                    }
+                ]
+            });
 
+        if (files.Count > 0)
+        {
+            _selectedFilePath = files[0].Path?.LocalPath;
+        }
+
+
+        FilePathTextBlock.Text = _selectedFilePath ?? "No file selected";
+    }
 }
