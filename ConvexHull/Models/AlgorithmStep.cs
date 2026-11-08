@@ -5,8 +5,4 @@ namespace ConvexHull.Models;
 public class AlgorithmStep
 {
     public IReadOnlyList<Point2D> Hull { get; init; } = [];
-
-    public Point2D? CurrentPoint { get; init; }
-
-    public Point2D? ComparedPoint { get; init; }
 }

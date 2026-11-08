@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using ConvexHull.Algorithms;
@@ -8,19 +9,36 @@ namespace ConvexHull.Services;
 
 public class ConvexHullService
 {
+    private IConvexHullAlgorithm? _algorithm;
+
     public IReadOnlyList<Point2D> Calculate(
-        Algorithm algorithm,
+        Algorithm algorithmType,
+        OperationMode operationMode,
         IReadOnlyList<Point2D> points)
     {
-        return algorithm switch
+        _algorithm = algorithmType switch
         {
-            Algorithm.Andrew => CalculateAndrew(points),
-            Algorithm.QuickHull => CalculateQuickHull(points),
+            Algorithm.Andrew => new AndrewsAlgorithm(),
+            Algorithm.QuickHull => new AndrewsAlgorithm(), // TODO: change to QuickHull() algorithm
             _ => throw new ArgumentOutOfRangeException(
-                nameof(algorithm),
-                algorithm,
+                nameof(algorithmType),
+                algorithmType,
                 "Unknown convex hull algorithm.")
         };
+
+        _algorithm.Initialize(points, operationMode);
+        return _algorithm.Calculate();
+    }
+
+    public AlgorithmStep? NextStep()
+    {
+        if (_algorithm is null)
+        {
+            throw new InvalidOperationException(
+                "No algorithm has been initialized.");
+        }
+
+        return _algorithm.NextStep();
     }
 
     private IReadOnlyList<Point2D> CalculateAndrew(IReadOnlyList<Point2D> points)
