@@ -52,8 +52,10 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="Start"
                         Click="Start_Click" />
-                <Button Content="Next Step"
-                        Click="NextStep_Click" />
+                <Button x:Name="NextStepButton"
+                        Content="Next Step"
+                        Click="NextStep_Click" 
+                        IsVisible="False" />
             </StackPanel>
         </StackPanel>
         <!-- Drawing area -->

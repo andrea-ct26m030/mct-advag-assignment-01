@@ -104,6 +104,10 @@ public partial class MainWindow : Window
         {
             HullCanvasView.SetHull(hull);
         }
+        else
+        {
+            NextStepButton.IsVisible = true;
+        }
     }
 
     public void Algorithm_SelectionChanged(
@@ -149,6 +153,10 @@ public partial class MainWindow : Window
         {
             _operationMode = operation;
             Console.WriteLine(_operationMode);
+            if (_operationMode == OperationMode.Performance)
+            {
+                NextStepButton.IsVisible = false;
+            }
         }
     }
 
