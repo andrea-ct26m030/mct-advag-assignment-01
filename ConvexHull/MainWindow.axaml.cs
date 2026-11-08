@@ -20,10 +20,7 @@ public partial class MainWindow : Window
 
 
     // FUNCTIONALITY
-    private List<Point2D> points;
     private readonly ConvexHullService _convexHullService = new();
-    private IReadOnlyList<Point2D> _currentHull = [];
-
 
     public MainWindow()
     {
@@ -44,11 +41,19 @@ public partial class MainWindow : Window
     }
 
     public void NextStep_Click(
-        object? sender,
-        RoutedEventArgs e)
+    object? sender,
+    RoutedEventArgs e)
     {
+        AlgorithmStep? step = _convexHullService.NextStep();
+
+        if (step is null)
+            return;
+
+        HullCanvasView.SetHull(step.Hull, OperationMode.Performance);
+
         Console.WriteLine("Next Step clicked!");
     }
+
     public void Start_Click(object? sender, RoutedEventArgs e)
     {
         int pointCount = (int)(PointCountInput.Value ?? 50);
@@ -60,10 +65,12 @@ public partial class MainWindow : Window
 
         HullCanvasView.SetPoints(points);
 
-        
+
         IReadOnlyList<Point2D> hull = _convexHullService.Calculate(
             _algorithm,
-            points);
+            _operationMode,
+            points
+            );
 
         HullCanvasView.SetHull(hull);
     }

@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Metadata;
+using ConvexHull.Enums;
 using ConvexHull.Models;
 using ConvexHull.Services;
 
@@ -13,6 +14,7 @@ public class HullCanvas : Control
 {
     public const int CanvasWidth = 400;
     public const int CanvasHeight = 400;
+    private Boolean _closeHull = true;
 
     private IReadOnlyList<Point2D> _points = [];
     private IReadOnlyList<Point2D> _hull = [];
@@ -31,9 +33,10 @@ public class HullCanvas : Control
         InvalidateVisual();
     }
 
-    public void SetHull(IReadOnlyList<Point2D> hull)
+    public void SetHull(IReadOnlyList<Point2D> hull, OperationMode operationMode = OperationMode.Performance)
     {
         _hull = hull;
+        _closeHull = operationMode == OperationMode.Performance;
 
         InvalidateVisual();
     }
@@ -62,17 +65,15 @@ public class HullCanvas : Control
     private void DrawHull(DrawingContext context)
     {
         if (_hull.Count < 2)
-        {
             return;
-        }
 
         var pen = new Pen(Brushes.Red, 2);
 
-        for (int index = 0; index < _hull.Count; index++)
+        int lineCount = _closeHull ? _hull.Count : _hull.Count - 1;
+
+        for (int index = 0; index < lineCount; index++)
         {
             Point2D current = _hull[index];
-
-            // For the last point, this returns to point 0.
             Point2D next = _hull[(index + 1) % _hull.Count];
 
             context.DrawLine(
@@ -81,4 +82,5 @@ public class HullCanvas : Control
                 new Point(next.X, next.Y));
         }
     }
+
 }
