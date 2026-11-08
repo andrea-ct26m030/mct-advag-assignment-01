@@ -19,7 +19,7 @@ public class ConvexHullService
         _algorithm = algorithmType switch
         {
             Algorithm.Andrew => new AndrewsAlgorithm(),
-            Algorithm.QuickHull => new AndrewsAlgorithm(), // TODO: change to QuickHull() algorithm
+            Algorithm.QuickHull => new QuickHullAlgorithm(),
             _ => throw new ArgumentOutOfRangeException(
                 nameof(algorithmType),
                 algorithmType,

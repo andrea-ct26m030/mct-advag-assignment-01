@@ -7,11 +7,24 @@ namespace ConvexHull.Algorithms;
 
 public class QuickHullAlgorithm : IConvexHullAlgorithm
 {
+    private Boolean _calculateSteps;
+    private List<AlgorithmStep> _steps = new();
+    private int _stepIndex = 0;
+    private List<Point2D> _currentHull = new();
+
     private List<Point2D> _points = new();
 
-    public void Initialize(IReadOnlyList<Point2D> points, OperationMode operationMode)
+    public void Initialize(
+        IReadOnlyList<Point2D> points, 
+        OperationMode operationMode)
     {
-        _points = new List<Point2D>(points);
+        _points = [.. points];
+        _calculateSteps = operationMode == OperationMode.Visual;
+
+        _currentHull.Clear();
+
+        _steps.Clear();
+        _stepIndex = 0;
     }
 
     public IReadOnlyList<Point2D> Calculate()
@@ -25,6 +38,16 @@ public class QuickHullAlgorithm : IConvexHullAlgorithm
 
         Point2D leftmost = FindLeftmostPoint(hull);
         Point2D rightmost = FindRightmostPoint(hull);
+
+        _currentHull = [
+            leftmost,
+            rightmost
+        ];
+
+        if (_calculateSteps)
+        {
+            SaveStep(_currentHull);
+        }
 
         List<Point2D> leftSet = new List<Point2D>();
         List<Point2D> rightSet = new List<Point2D>();
@@ -41,60 +64,63 @@ public class QuickHullAlgorithm : IConvexHullAlgorithm
             }
         }
 
-        List<Point2D> leftHull = Hull(leftSet, leftmost, rightmost);
-        List<Point2D> rightHull = Hull(rightSet, rightmost, leftmost);
+        Hull(leftSet, leftmost, rightmost);
+        Hull(rightSet, rightmost, leftmost);
 
-        hull = new List<Point2D>();
-        hull.Add(leftmost);
-        hull.AddRange(leftHull);
-        hull.Add(rightmost);
-        hull.AddRange(rightHull);
+        if (_calculateSteps)
+        {
+            SaveStep(_currentHull);
+        }
 
-        return hull;
+        return _currentHull;
     }
 
-    public AlgorithmStep NextStep()
+    public AlgorithmStep? NextStep()
     {
-        // TODO: Implement step-by-step execution
-        throw new NotImplementedException();
+        if (_stepIndex >= _steps.Count)
+            return null;
+
+        return _steps[_stepIndex++];
     }
 
-    private List<Point2D> Hull(List<Point2D> points, Point2D p1, Point2D p2)
+    private void SaveStep(IReadOnlyList<Point2D> hull)
+    {
+        List<Point2D> snapshot = [.. hull];
+
+        _steps.Add(new AlgorithmStep
+        {
+            Hull = snapshot
+        });
+    }
+
+    private void Hull(List<Point2D> points, Point2D p1, Point2D p2)
     {
         if (points.Count == 0)
-        {
-            return new List<Point2D>();
-        }
+            return;
 
         Point2D farthestPoint = FindFarthestPoint(points, p1, p2);
 
         List<Point2D> leftSet = new List<Point2D>();
-        foreach (Point2D p in points)
-        {
-            if (CrossProduct(p1, farthestPoint, p) > 0)
-            {
-                leftSet.Add(p);
-            }
-        }
-
         List<Point2D> rightSet = new List<Point2D>();
+
         foreach (Point2D p in points)
         {
-            if (CrossProduct(farthestPoint, p2, p) > 0)
-            {
+            if (CrossProduct(p1, farthestPoint, p) > 0) 
+                leftSet.Add(p);
+            if (CrossProduct(farthestPoint, p2, p) > 0) 
                 rightSet.Add(p);
-            }
         }
 
-        List<Point2D> leftHull = Hull(leftSet, p1, farthestPoint);
-        List<Point2D> rightHull = Hull(rightSet, farthestPoint, p2);
+        int p1Index = _currentHull.IndexOf(p1);
+        _currentHull.Insert(p1Index + 1, farthestPoint);
 
-        List<Point2D> result = new List<Point2D>();
-        result.AddRange(leftHull);
-        result.Add(farthestPoint);
-        result.AddRange(rightHull);
+        if (_calculateSteps)
+        {
+            SaveStep(_currentHull);
+        }
 
-        return result;
+        Hull(leftSet, p1, farthestPoint);
+        Hull(rightSet, farthestPoint, p2);
     }
 
     private double CrossProduct(Point2D p1, Point2D p2, Point2D p3)

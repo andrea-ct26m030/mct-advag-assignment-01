@@ -100,7 +100,10 @@ public partial class MainWindow : Window
             points
             );
 
-        HullCanvasView.SetHull(hull);
+        if (_operationMode == OperationMode.Performance)
+        {
+            HullCanvasView.SetHull(hull);
+        }
     }
 
     public void Algorithm_SelectionChanged(
