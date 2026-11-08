@@ -54,8 +54,8 @@ public class HullCanvas : Control
                 Brushes.CornflowerBlue,
                 null,
                 new Point(point.X, point.Y),
-                5,
-                5);
+                2,
+                2);
         }
     }
 
