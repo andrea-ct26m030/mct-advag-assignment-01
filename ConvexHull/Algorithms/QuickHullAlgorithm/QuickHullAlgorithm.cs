@@ -9,7 +9,7 @@ public class QuickHullAlgorithm : IConvexHullAlgorithm
 {
     private List<Point2D> _points = new();
 
-    public void Initialize(IReadOnlyList<Point2D> points)
+    public void Initialize(IReadOnlyList<Point2D> points, OperationMode operationMode)
     {
         _points = new List<Point2D>(points);
     }

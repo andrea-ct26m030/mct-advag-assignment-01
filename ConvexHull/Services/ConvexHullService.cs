@@ -41,18 +41,18 @@ public class ConvexHullService
         return _algorithm.NextStep();
     }
 
-    private IReadOnlyList<Point2D> CalculateAndrew(IReadOnlyList<Point2D> points)
+    private IReadOnlyList<Point2D> CalculateAndrew(IReadOnlyList<Point2D> points, OperationMode operationMode)
     {
         var algorithm = new AndrewsAlgorithm();
-        algorithm.Initialize(points);
+        algorithm.Initialize(points, operationMode);
 
         return algorithm.Calculate();
     }
 
-    private IReadOnlyList<Point2D> CalculateQuickHull(IReadOnlyList<Point2D> points)
+    private IReadOnlyList<Point2D> CalculateQuickHull(IReadOnlyList<Point2D> points, OperationMode operationMode)
     {
         var algorithm = new QuickHullAlgorithm();
-        algorithm.Initialize(points);
+        algorithm.Initialize(points, operationMode);
 
         return algorithm.Calculate();
     }
