@@ -15,4 +15,4 @@ Wichtig: Bei Andrew’s Algorithm ist der Unterschied zwischen den Punktverteilu
 
 Bei Quickhull beeinflusst die Punktverteilung die Laufzeit deutlich stärker:
 - Best Case: \(O(n)\) bei günstig aufgeteilten Punkten, beispielsweise wenn nur wenige Punkte die Hülle bilden.
-- Worst Case: \(O(n^2)\) bei sehr ungünstigen Aufteilungen.
+- Worst Case: \(O(n^2)\) bei sehr ungünstigen Aufteilunge, wenn verhältnismäßig mehr Punkte Teil der Hülle sind, als in der Hülle.

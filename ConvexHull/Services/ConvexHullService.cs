@@ -33,7 +33,9 @@ public class ConvexHullService
 
     private IReadOnlyList<Point2D> CalculateQuickHull(IReadOnlyList<Point2D> points)
     {
-        // QuickHull implementation
-        throw new NotImplementedException();
+        var algorithm = new QuickHullAlgorithm();
+        algorithm.Initialize(points);
+
+        return algorithm.Calculate();
     }
 }
