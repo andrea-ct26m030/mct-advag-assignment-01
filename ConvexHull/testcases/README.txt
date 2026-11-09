@@ -1,19 +1,14 @@
-CONVEX HULL TEST FILES
+Convex Hull Test Cases - normalized for 400x400 canvas
 
-Each numbered .txt file uses exactly the format of TestForHull.txt:
-Line 1: number of points
-Following lines: x,y using a dot as decimal separator (no spaces or comments)
-Example:
-3
-0,0
-5,0
-2,4
+All coordinates are within [10, 390] for each axis.
+Uniform scaling preserves the original aspect ratio and relative geometry.
+Shapes are centered, so thin/collinear datasets intentionally will not fill both dimensions.
 
-Import the numbered .txt files individually into your project.
-MANIFEST.csv is only for checking test expectations; do not import it as point data.
+Format: first line = point count, following lines = x,y (dot decimal).
 
-Expected hull counts assume a minimal convex hull: duplicate points are removed and collinear points along hull edges are omitted, retaining only extreme endpoints. If your implementation deliberately keeps boundary-collinear points, expected hull counts differ. For 0/1/2 unique points, expected hull count equals the number of unique points.
+CAUTION: Use original coordinates rather than these transformed data files when comparing
+numerical stability or benchmarking original distributions. Normalization can introduce
+rounding differences, especially for collinear or very small-coordinate tests.
 
-Performance test tips: load files before starting the stopwatch, test both algorithms on exactly the same points, disable visualization during measurement, warm up the runtime, and repeat each test many times.
-
-Circle/ellipse values are rounded to 12 significant digits in the files, and the expected counts were computed on the unrounded generated coordinates; these particular sets remain convex at the listed precision.
+To re-run:
+python3 normalize_hull_tests.py ConvexHull_TestCases.zip --size 400 --padding 10
