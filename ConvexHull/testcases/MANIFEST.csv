@@ -1,0 +1,41 @@
+filename,category,point_count,unique_point_count,expected_hull_vertex_count,description
+01_empty.txt,edge,0,0,0,No points; expected empty hull
+02_single.txt,edge,1,1,1,Single point
+03_two_points.txt,edge,2,2,2,Two points
+04_two_identical.txt,edge,2,1,1,Identical points
+05_triangle.txt,correctness,3,3,3,Simple triangle
+06_triangle_with_interior.txt,correctness,6,6,3,Interior points must be excluded
+07_square_corners.txt,correctness,4,4,4,Four extreme corners
+08_square_interior.txt,correctness,8,8,4,Square plus interior points
+09_square_boundary_collinear.txt,degenerate,9,9,4,Collinear boundary points; expected corner-only hull
+10_all_horizontal.txt,degenerate,6,6,2,All points on horizontal line
+11_all_vertical.txt,degenerate,5,5,2,All points on vertical line
+12_all_diagonal.txt,degenerate,5,5,2,All points on diagonal line
+13_collinear_duplicates.txt,degenerate,6,4,2,Collinear and duplicate points
+14_all_identical.txt,degenerate,12,1,1,Every input point identical
+15_duplicate_corners.txt,degenerate,8,5,4,Duplicate hull and interior points
+16_negative_coordinates.txt,correctness,6,6,5,Negative X/Y coordinates
+17_fractional_coordinates.txt,correctness,6,6,5,Fractional coordinates like the supplied file
+18_same_x_extremes.txt,degenerate,7,7,4,Many equal X coordinates; sort ties correctly
+19_same_y_extremes.txt,degenerate,6,6,4,Many equal Y coordinates
+20_unsorted_zigzag.txt,correctness,8,8,4,Points deliberately in unsorted order
+21_concave_u_shape.txt,correctness,10,10,4,Non-convex U-shaped input; outer hull only
+22_star_shape.txt,correctness,10,10,5,Star-like arrangement with interior indentations
+23_near_collinear.txt,precision,7,7,4,Near-collinear coordinates; watch floating-point tolerance
+24_large_coordinates.txt,precision,6,6,4,Large values; arithmetic overflow risk for integer cross products
+25_tiny_coordinates.txt,precision,5,5,4,Tiny coordinates; floating-point precision
+26_circle_100.txt,distribution,100,100,100,100 distinct points on a circle; all are hull vertices
+27_semicircle_101.txt,distribution,101,101,101,101 points on upper semicircle; all are hull vertices
+28_rectangle_boundary_200.txt,distribution,140,140,4,All points on rectangle boundary; corner-only hull
+29_grid_21x21.txt,distribution,441,441,4,Uniform square grid; corner-only hull
+30_random_square_100.txt,distribution,100,100,10,Seeded random coordinates in square
+31_random_square_1000.txt,performance,1000,1000,20,1000 seeded random points in square
+32_random_square_10000.txt,performance,10000,10000,28,10000 seeded random points in square
+33_random_disk_1000.txt,performance,1000,1000,38,1000 points uniformly sampled in disk area
+34_circle_1000.txt,performance,1000,1000,1000,1000 points on a circle
+35_circle_10000.txt,performance,10000,10000,10000,10000 points on a circle
+36_semicircle_1000.txt,performance,1000,1000,1000,1000 points on semicircle
+37_four_corners_many_interior_10000.txt,performance,10000,10000,4,10000 points with exactly four hull corners
+38_random_collinear_10000.txt,performance,10000,10000,2,10000 exactly collinear points
+39_shuffled_circle_1000.txt,performance,1000,1000,1000,Circle points deliberately shuffled
+40_ellipse_500.txt,distribution,500,500,500,500 points on an ellipse; all hull vertices
