@@ -47,6 +47,10 @@
                            Margin="5,0,0,0"
                            VerticalAlignment="Center"
                            IsVisible="False" />
+                <Button x:Name="TestAlgorithmsButton"
+                        Content="Test Algorithms"
+                        Click="TestAlgorithms_Click"
+                        IsVisible="true" />
             </StackPanel>
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal">

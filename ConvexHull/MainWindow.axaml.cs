@@ -218,4 +218,11 @@ public partial class MainWindow : Window
 
         FilePathTextBlock.Text = _selectedFilePath ?? "No file selected";
     }
+
+    public void TestAlgorithms_Click(
+        object? sender,
+        RoutedEventArgs e)
+    {
+        TestAlgorithms.RunAllTests("testcases");
+    }
 }
