@@ -37,6 +37,11 @@ This installs the required NuGet packages, including Avalonia and SkiaSharp.
 
 ### 3. Run the application
 
+Run using make: 
+```bash
+make run
+```
+
 From the repository root:
 
 ```bash
@@ -64,8 +69,35 @@ For an optimized release build:
 dotnet build ./ConvexHull/ConvexHull.csproj -c Release
 ```
 
+## Make
+build application
+```bash
+make build
+```
+
+restore
+```bash
+make restore
+```
+
+release application
+```bash
+make release
+```
+
+run application
+```bash
+make run
+```
+
+clean application
+```bash
+make clean
+```
+
 ## Technologies
 
 - **C# / .NET** – Application logic and convex hull algorithms
 - **Avalonia UI** – Cross-platform desktop interface
 - **SkiaSharp** – 2D graphics rendering
+- **GNU MAKE** - Makefile functionality
