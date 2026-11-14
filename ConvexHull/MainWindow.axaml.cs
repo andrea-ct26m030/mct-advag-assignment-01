@@ -117,7 +117,7 @@ public partial class MainWindow : Window
 
             PerformanceOutput.IsVisible = true;
             PerformanceOutput.Text = $"Convex Hull calculated in {stopwatch.ElapsedMilliseconds} ms. More information in the console output.";
-            
+
             HullCanvasView.SetHull(hull);
 
             return;
@@ -219,8 +219,6 @@ public partial class MainWindow : Window
 
         FilePathTextBlock.Text = _selectedFilePath ?? "No file selected";
     }
-<<<<<<< Updated upstream
-=======
 
     public void TestAlgorithms_Click(
         object? sender,
@@ -229,5 +227,4 @@ public partial class MainWindow : Window
         string testCasesFolder = Path.Combine(AppContext.BaseDirectory, "testcases");
         TestAlgorithms.RunAllTests(testCasesFolder);
     }
->>>>>>> Stashed changes
 }

@@ -9,9 +9,9 @@ namespace ConvexHull.Algorithms;
 public class AndrewsAlgorithm : IConvexHullAlgorithm
 {
     private Boolean _calculateSteps;
-    private List<Point2D> _points = new();
-    private List<Point2D> _upperHull = new();
-    private List<AlgorithmStep> _steps = new();
+    private List<Point2D> _points = new(); // given points
+    private List<Point2D> _upperHull = new(); // save upper hull for steps
+    private List<AlgorithmStep> _steps = new(); // saved steps
     private int _stepIndex = 0;
 
     public void Initialize(
@@ -36,13 +36,14 @@ public class AndrewsAlgorithm : IConvexHullAlgorithm
 
         // Create upper and lower hull
         List<Point2D> upperHull = BuildHull(sortedPoints, false);
-        if (_calculateSteps)
+        if (_calculateSteps) // just save upperHull for visualizing steps
             _upperHull = upperHull;
         List<Point2D> lowerHull = BuildHull(sortedPoints, true);
 
         return CombineHulls(upperHull, lowerHull);
     }
 
+    // Iterate through all saved steps
     public AlgorithmStep? NextStep()
     {
         if (_stepIndex >= _steps.Count)
@@ -51,45 +52,57 @@ public class AndrewsAlgorithm : IConvexHullAlgorithm
         return _steps[_stepIndex++];
     }
 
-    
-private List<Point2D> BuildHull(List<Point2D> points, bool reverse)
-{
-    List<Point2D> hull = [];
 
-    IEnumerable<Point2D> orderedPoints = reverse
-        ? points.AsEnumerable().Reverse()
-        : points;
-
-    foreach (Point2D next in orderedPoints)
+    private List<Point2D> BuildHull(List<Point2D> points, bool reverse)
     {
-        while (hull.Count >= 2)
+        List<Point2D> hull = []; // empty at beginning
+
+        // order points depending if upper or lower hull => first two points are added automatically
+        IEnumerable<Point2D> orderedPoints = reverse
+            ? points.AsEnumerable().Reverse()
+            : points;
+
+        // iterate through all points
+        foreach (Point2D next in orderedPoints)
         {
-            Point2D secondLast = hull[^2];
-            Point2D last = hull[^1];
+            // when there are more than 2 points on hull
+            while (hull.Count >= 2)
+            {
+                // take two last points on hull
+                Point2D secondLast = hull[^2];
+                Point2D last = hull[^1];
 
-            double orientation = Orient2D(
-                secondLast.X, secondLast.Y,
-                last.X, last.Y,
-                next.X, next.Y);
+                // calculate if next point on left or right side of line
+                double orientation = Orient2D(
+                    secondLast.X, secondLast.Y,
+                    last.X, last.Y,
+                    next.X, next.Y);
 
-            // Same condition for both hulls
-            if (orientation > 0)
-                break;
+                // if bigger than 0, then next point is right, 
+                // previous point is also on hull and doesnt need to be removed, 
+                // => so break
+                if (orientation > 0)
+                    break;
 
-            hull.RemoveAt(hull.Count - 1);
+                // otherwise, point is left, 
+                // so recently added points isnt on hull anymore
+                // => remove the most recently added point from hull
+                hull.RemoveAt(hull.Count - 1);
+
+                // just save step if visualized
+                if (_calculateSteps)
+                    SaveStep(hull);
+            }
+
+            // add next point to hull
+            hull.Add(next);
 
             if (_calculateSteps)
                 SaveStep(hull);
         }
 
-        hull.Add(next);
-
-        if (_calculateSteps)
-            SaveStep(hull);
+        return hull;
     }
-
-    return hull;
-}
 
 
     private void SaveStep(IReadOnlyList<Point2D> hull)
@@ -119,6 +132,7 @@ private List<Point2D> BuildHull(List<Point2D> points, bool reverse)
         return combinedHull;
     }
 
+    // oder by x axis and then by y
     private List<Point2D> SortPoints(List<Point2D> points)
     {
         return points
@@ -127,6 +141,7 @@ private List<Point2D> BuildHull(List<Point2D> points, bool reverse)
             .ToList();
     }
 
+    // Calculates the determinante
     private static double Orient2D(
     double ax, double ay,
     double bx, double by,
