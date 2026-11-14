@@ -28,6 +28,25 @@ public class TestAlgorithms
         .OrderBy(file => file)
         .ToArray();
 
+        if (testFiles.Length == 0)
+        {
+            Console.WriteLine($"No test-case files found in: {testCasesFolder}");
+            return;
+        }
+
+        int fileNameWidth = Math.Max(
+            "Test case".Length,
+            testFiles.Max(file => Path.GetFileName(file).Length));
+        int testRunCount = 0;
+        Stopwatch totalStopwatch = Stopwatch.StartNew();
+
+        Console.WriteLine();
+        Console.WriteLine("Convex Hull Algorithm Tests");
+        Console.WriteLine(new string('=', fileNameWidth + 56));
+        Console.WriteLine(
+            $"{"Test case".PadRight(fileNameWidth)}  {"Input",8}  {"Algorithm",12}  {"Hull",8}  {"Time",14}");
+        Console.WriteLine(new string('-', fileNameWidth + 56));
+
         foreach (string file in testFiles)
         {
             try
@@ -47,11 +66,14 @@ public class TestAlgorithms
 
                     stopwatch.Stop();
 
+                    testRunCount++;
+
                     Console.WriteLine(
-                        $"File: {Path.GetFileName(file)}, " +
-                        $"Algorithm: {algorithmType}, " +
-                        $"Hull Points: {hull.Count}, " +
-                        $"Time: {stopwatch.ElapsedMilliseconds} ms");
+                        $"{Path.GetFileName(file).PadRight(fileNameWidth)}  " +
+                        $"{points.Count,8:N0}  " +
+                        $"{algorithmType,12}  " +
+                        $"{hull.Count,8:N0}  " +
+                        $"{FormatElapsedTime(stopwatch.Elapsed),14}");
                 }
             }
             catch (Exception ex)
@@ -60,5 +82,17 @@ public class TestAlgorithms
                     $"Skipping {Path.GetFileName(file)}: {ex.Message}");
             }
         }
+
+        totalStopwatch.Stop();
+        Console.WriteLine(new string('-', fileNameWidth + 56));
+        Console.WriteLine(
+            $"Completed {testRunCount:N0} runs across {testFiles.Length:N0} test cases " +
+            $"in {FormatElapsedTime(totalStopwatch.Elapsed)}.");
+        Console.WriteLine();
+    }
+
+    private static string FormatElapsedTime(TimeSpan elapsed)
+    {
+        return $"{elapsed.TotalMilliseconds:N3} ms";
     }
 }

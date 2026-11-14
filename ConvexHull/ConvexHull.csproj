@@ -16,4 +16,9 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="testcases/**/*.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="testcases/**/*.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
