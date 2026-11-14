@@ -112,10 +112,10 @@ Allerdings macht die Sortierung etwas aus.
 
 ### Laufzeitanalyse
 
-- **Beste Laufzeit:** Viereck
+- **Beste Laufzeit:** Dreieck/Viereck
 - **Schlechteste Laufzeit:** Kreis
 
 Bei QuickHull beeinflusst die Punktverteilung die Laufzeit deutlich stärker:
 
-- **Best Case:** \(O(n)\) bei günstig aufgeteilten Punkten, beispielsweise wenn nur wenige Punkte die Hülle bilden.
+- **Best Case:** \(O(n log n)\) bei günstig aufgeteilten Punkten, die bei jeder Partition gleichmäßig geteilt werden. Wenn die Hülle ein Dreieck oder Viereck bildet und die alle anderen Punkte direkt verworfen werden können, nähert sich die Laufzeit an O(n).
 - **Worst Case:** \(O(n^2)\) bei sehr ungünstigen Aufteilungen, wenn verhältnismäßig viele Punkte Teil der Hülle sind.

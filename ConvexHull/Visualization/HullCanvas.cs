@@ -10,6 +10,7 @@ using ConvexHull.Services;
 
 namespace ConvexHull.Visualization;
 
+// class for the canvas and visualization of the convex hull and the points
 public class HullCanvas : Control
 {
     public const int CanvasWidth = 400;

@@ -7,10 +7,13 @@ using ConvexHull.Models;
 
 namespace ConvexHull.Services;
 
+// Class responsible for managing the convex hull calculation process, including selecting the appropriate algorithm and handling operation modes
 public class ConvexHullService
 {
+    // Currently selected algorithm
     private IConvexHullAlgorithm? _algorithm;
 
+    // Initializes the selected algorithm with the given points and operation mode
     public IReadOnlyList<Point2D> Calculate(
         Algorithm algorithmType,
         OperationMode operationMode,
@@ -30,6 +33,7 @@ public class ConvexHullService
         return _algorithm.Calculate();
     }
 
+    // Handles the next step in the convex hull calculation process for visual mode
     public AlgorithmStep? NextStep()
     {
         if (_algorithm is null)
@@ -39,21 +43,5 @@ public class ConvexHullService
         }
 
         return _algorithm.NextStep();
-    }
-
-    private IReadOnlyList<Point2D> CalculateAndrew(IReadOnlyList<Point2D> points, OperationMode operationMode)
-    {
-        var algorithm = new AndrewsAlgorithm();
-        algorithm.Initialize(points, operationMode);
-
-        return algorithm.Calculate();
-    }
-
-    private IReadOnlyList<Point2D> CalculateQuickHull(IReadOnlyList<Point2D> points, OperationMode operationMode)
-    {
-        var algorithm = new QuickHullAlgorithm();
-        algorithm.Initialize(points, operationMode);
-
-        return algorithm.Calculate();
     }
 }

@@ -50,7 +50,7 @@
                 <Button x:Name="TestAlgorithmsButton"
                         Content="Test Algorithms"
                         Click="TestAlgorithms_Click"
-                        IsVisible="true" />
+                        IsVisible="false" />
             </StackPanel>
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal">

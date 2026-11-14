@@ -21,6 +21,7 @@ public class TestAlgorithms
             return;
         }
 
+        // gets all files in the right folder that are the right file types
         string[] testFiles = Directory.GetFiles(testCasesFolder)
         .Where(file =>
             string.Equals(Path.GetExtension(file), ".txt") ||
@@ -34,12 +35,16 @@ public class TestAlgorithms
             return;
         }
 
+        // Calculate the width of the "Test case" column based on the longest file name
         int fileNameWidth = Math.Max(
             "Test case".Length,
             testFiles.Max(file => Path.GetFileName(file).Length));
         int testRunCount = 0;
+
+        // Start the total stopwatch to measure the overall time taken for all test cases
         Stopwatch totalStopwatch = Stopwatch.StartNew();
 
+        // Console Logging for the test results
         Console.WriteLine();
         Console.WriteLine("Convex Hull Algorithm Tests");
         Console.WriteLine(new string('=', fileNameWidth + 56));
@@ -47,6 +52,7 @@ public class TestAlgorithms
             $"{"Test case".PadRight(fileNameWidth)}  {"Input",8}  {"Algorithm",12}  {"Hull",8}  {"Time",14}");
         Console.WriteLine(new string('-', fileNameWidth + 56));
 
+        // for each file in the test cases folder, read the points and run each algorithm on them, logging the results
         foreach (string file in testFiles)
         {
             try
