@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -218,4 +219,15 @@ public partial class MainWindow : Window
 
         FilePathTextBlock.Text = _selectedFilePath ?? "No file selected";
     }
+<<<<<<< Updated upstream
+=======
+
+    public void TestAlgorithms_Click(
+        object? sender,
+        RoutedEventArgs e)
+    {
+        string testCasesFolder = Path.Combine(AppContext.BaseDirectory, "testcases");
+        TestAlgorithms.RunAllTests(testCasesFolder);
+    }
+>>>>>>> Stashed changes
 }
